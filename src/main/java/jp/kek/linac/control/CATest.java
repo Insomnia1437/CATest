@@ -22,6 +22,15 @@ public class CATest {
     public static void main(String[] args) throws Throwable {
 
         try (Context context = new Context()) {
+            Channel<Integer> hwOverFlow = context.createChannel("test:mrfioc:evr2:sdcswd:Cnt:HwOflw-I", Integer.class);
+            Listener listener = hwOverFlow.addConnectionListener((channel, state) -> System.out.println(channel.getName() + "is connected? " + state));
+            hwOverFlow.connectAsync().get();
+            CompletableFuture<Integer> res = hwOverFlow.getAsync();
+            System.out.println(res.get());
+
+            if (true) {
+                return;
+            }
             Channel<Double> adc = context.createChannel("adc01", Double.class);
 
             // add connection listener
